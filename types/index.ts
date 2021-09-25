@@ -36,3 +36,8 @@ interface IssueConnection {
 interface PullRequestConnection {
   totalCount: number
 }
+
+export interface GlobalContextType {
+  cursor: number
+  cursorHandler: (nextCursor: number) => void
+}
