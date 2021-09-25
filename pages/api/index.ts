@@ -8,10 +8,10 @@ const graphQLClient = new GraphQLClient(END_POINT, {
   },
 })
 
-export async function graphQLQuery() {
+export async function graphQLQuery(developer: string) {
   const query = gql`
     {
-      user(login: "ginger-kang") {
+      user(login: "${developer}") {
         repositories {
           totalCount
         }
@@ -20,11 +20,25 @@ export async function graphQLQuery() {
         }
         email
         avatarUrl
+        contributionsCollection {
+          contributionCalendar {
+            totalContributions
+          }
+        }
+        issues {
+          totalCount
+        }
+        pullRequests {
+          totalCount
+        }
       }
     }
   `
+  try {
+    const data = await graphQLClient.request(query)
 
-  const data = await graphQLClient.request(query)
-
-  return data
+    return data
+  } catch (e: any) {
+    throw new Error(e.message)
+  }
 }
