@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import * as React from 'react'
-import type { GlobalContextType } from '../types'
+import type { GlobalContextType, DeveloperStats } from '../types'
 
 interface Props {
   children: React.ReactNode
@@ -8,7 +8,12 @@ interface Props {
 
 const globalContextDefaultValues: GlobalContextType = {
   cursor: 0,
+  currentPage: [],
   cursorHandler: () => {},
+  isInitializing: () => true,
+  developerStatsHandler: () => {},
+  loadMore: () => {},
+  hasMore: () => true,
 }
 
 const GlobalStateContext = React.createContext<GlobalContextType>(
@@ -20,15 +25,39 @@ export function useGlobalState() {
 }
 
 export function GlobalContextProvider({ children }: Props) {
+  const [developerStats, setDeveloperStats] = React.useState<
+    DeveloperStats[][]
+  >([[]])
+  const [currentPage, setCurrentPage] = React.useState<DeveloperStats[]>([])
   const [cursor, setCursor] = React.useState<number>(0)
+
+  const developerStatsHandler = (nextDeveloperStats: DeveloperStats[][]) => {
+    setDeveloperStats(nextDeveloperStats)
+  }
+
+  const loadMore = () => {
+    const pageNum = cursor
+
+    setCursor(cursor => cursor + 1)
+    setCurrentPage([...currentPage, ...developerStats[pageNum]])
+  }
+
+  const hasMore = () => cursor <= developerStats.length
 
   const cursorHandler = (nextCursor: number) => {
     setCursor(nextCursor)
   }
 
+  const isInitializing = () => cursor === 0
+
   const value = {
     cursor,
+    currentPage,
     cursorHandler,
+    isInitializing,
+    developerStatsHandler,
+    loadMore,
+    hasMore,
   }
 
   return (

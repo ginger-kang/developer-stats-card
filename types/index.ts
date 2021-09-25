@@ -8,7 +8,7 @@ export interface GithubUser {
   contributionsCollection: ContributionsCollection
 }
 
-export interface DeveloperInfo extends GithubUser {
+export interface DeveloperStats extends GithubUser {
   name: string
   developer: string
 }
@@ -39,5 +39,10 @@ interface PullRequestConnection {
 
 export interface GlobalContextType {
   cursor: number
+  currentPage: DeveloperStats[]
   cursorHandler: (nextCursor: number) => void
+  isInitializing: () => boolean
+  developerStatsHandler: (nextDeveloperStats: DeveloperStats[][]) => void
+  loadMore: () => void
+  hasMore: () => boolean
 }

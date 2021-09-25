@@ -2,12 +2,12 @@ import fs from 'fs'
 import path from 'path'
 
 import type { GetStaticProps } from 'next'
-import type { DeveloperInfo } from '../types'
+import type { DeveloperStats } from '../types'
 import { graphQLQuery } from './api'
 import Home from '../components/Home'
 
 interface Props {
-  developers: DeveloperInfo[][]
+  developers: DeveloperStats[][]
 }
 
 const HomePage: React.FC<Props> = ({ developers }) => {
@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const paths = path.join(process.cwd(), 'developers.json')
   const contents = JSON.parse(fs.readFileSync(paths, 'utf-8'))
 
-  const githubUsers: DeveloperInfo[] = await Promise.all(
+  const githubUsers: DeveloperStats[] = await Promise.all(
     Object.keys(contents).map(async developer => {
       try {
         const { user } = await graphQLQuery(developer)
@@ -30,8 +30,8 @@ export const getStaticProps: GetStaticProps = async () => {
     })
   )
 
-  const batchedGithubUsers: DeveloperInfo[][] = githubUsers.reduce(
-    (batch: DeveloperInfo[][], user: DeveloperInfo) => {
+  const batchedGithubUsers: DeveloperStats[][] = githubUsers.reduce(
+    (batch: DeveloperStats[][], user: DeveloperStats) => {
       if (batch[batch.length - 1].length === 2) {
         batch.push([user])
       } else {

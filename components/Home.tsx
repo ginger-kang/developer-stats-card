@@ -1,18 +1,53 @@
-import type { DeveloperInfo } from '../types'
+import * as React from 'react'
+import type { DeveloperStats, GlobalContextType } from '../types'
 import { useGlobalState } from './GlobalContext'
 
-interface hProps {
-  developers: DeveloperInfo[][]
+interface Props {
+  developers: DeveloperStats[][]
 }
 
-function Home({ developers }: hProps) {
-  const { cursor, cursorHandler } = useGlobalState()
+function Home({ developers }: Props) {
+  const {
+    cursor,
+    currentPage,
+    cursorHandler,
+    isInitializing,
+    developerStatsHandler,
+    loadMore,
+    hasMore,
+  }: GlobalContextType = useGlobalState()
 
-  console.log(developers, cursor)
+  React.useEffect(() => {
+    if (isInitializing()) {
+      developerStatsHandler(developers)
+    }
+  }, [isInitializing, developerStatsHandler, developers])
+
+  console.log(currentPage, cursor)
+
   return (
     <>
-      <div>Home</div>
-      <button onClick={() => cursorHandler(cursor + 1)}>버튼</button>
+      {currentPage.length ? (
+        <>
+          {currentPage.map(developer => (
+            <div key={developer.name}>
+              <h1>{developer.developer}</h1>
+              <p>
+                contributions{' '}
+                {
+                  developer.contributionsCollection.contributionCalendar
+                    .totalContributions
+                }
+              </p>
+              <p>followers {developer.followers.totalCount}</p>
+              <p>pullRequests {developer.pullRequests.totalCount}</p>
+            </div>
+          ))}
+        </>
+      ) : (
+        <div>loading...</div>
+      )}
+      <button onClick={() => loadMore()}>Load More</button>
     </>
   )
 }
