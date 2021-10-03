@@ -36,7 +36,7 @@ export function GlobalContextProvider({ children }: Props) {
   }
 
   const loadMore = () => {
-    const pageNum = cursor
+    const pageNum: number = cursor
 
     setCursor(cursor => cursor + 1)
     setCurrentPage([...currentPage, ...developerStats[pageNum]])

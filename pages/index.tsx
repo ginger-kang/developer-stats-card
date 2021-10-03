@@ -2,9 +2,9 @@ import fs from 'fs'
 import path from 'path'
 
 import type { GetStaticProps } from 'next'
-import type { DeveloperStats } from '../types'
+import type { DeveloperStats } from '../src/types'
 import { graphQLQuery } from './api'
-import Home from '../components/Home'
+import Home from '../src/components/Home'
 
 interface Props {
   developers: DeveloperStats[][]
