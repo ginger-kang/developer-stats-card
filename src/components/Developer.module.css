@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  margin: 10px;
+  background-color: rgb(91, 33, 253);
+  border-radius: 10px;
+  padding: 10px;
+  color: white;
+}
+
+.avatar {
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
+}

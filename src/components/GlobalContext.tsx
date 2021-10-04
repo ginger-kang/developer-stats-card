@@ -38,11 +38,15 @@ export function GlobalContextProvider({ children }: Props) {
   const loadMore = () => {
     const pageNum: number = cursor
 
+    console.log('loadMore', cursor, developerStats)
+
+    if (pageNum >= developerStats.length) return
+
     setCursor(cursor => cursor + 1)
     setCurrentPage([...currentPage, ...developerStats[pageNum]])
   }
 
-  const hasMore = () => cursor <= developerStats.length
+  const hasMore = () => cursor <= developerStats.length - 1
 
   const cursorHandler = (nextCursor: number) => {
     setCursor(nextCursor)
