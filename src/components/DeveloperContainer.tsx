@@ -42,19 +42,21 @@ const DeveloperContainer = ({ developers }: Props) => {
 
   return (
     <>
-      {currentPage.length ? (
-        <div className={styles.container}>
-          {currentPage.map(developer => (
-            <DeveloperCard key={developer.name} developer={developer} />
-          ))}
-          {hasMoreDeveloper && <div ref={loadMoreButtonRef} />}
-        </div>
-      ) : (
-        <>
-          <div>loading...</div>
-        </>
-      )}
-      {hasMoreDeveloper && <div ref={loadMoreButtonRef} />}
+      <main className={styles.main}>
+        {currentPage.length ? (
+          <section className={styles.container}>
+            {currentPage.map(developer => (
+              <DeveloperCard key={developer.name} developer={developer} />
+            ))}
+            {hasMoreDeveloper && <div ref={loadMoreButtonRef} />}
+          </section>
+        ) : (
+          <>
+            <div>loading...</div>
+          </>
+        )}
+        {hasMoreDeveloper && <div ref={loadMoreButtonRef} />}
+      </main>
     </>
   )
 }
